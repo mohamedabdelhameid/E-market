@@ -1,0 +1,143 @@
+<div class="mt-2.5">
+  <div class="flex flex-col justify-between items-center px-4 mx-auto gap-4">
+    <div class="header flex md:flex-row flex-col justify-between items-center w-full mb-4 gap-4">
+      <p class="text-gray-500 text-5xl col-span-10">All Products</p>
+      <div class="text-center">
+        <button
+          class="btn cursor-pointer"
+          type="button"
+          data-drawer-target="drawer-navigation"
+          data-drawer-show="drawer-navigation"
+          aria-controls="drawer-navigation"
+        >
+          Filter
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="drawer-navigation"
+      class="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-neutral-primary-soft border-e border-default"
+      tabindex="-1"
+      aria-labelledby="drawer-navigation-label"
+    >
+      <div class="border-b border-default pb-4 flex items-center">
+        Filters
+        <button
+          type="button"
+          data-drawer-hide="drawer-navigation"
+          aria-controls="drawer-navigation"
+          class="text-body bg-transparent hover:text-heading hover:bg-neutral-tertiary rounded-base w-9 h-9 absolute top-2.5 end-2.5 flex items-center justify-center"
+        >
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18 17.94 6M18 18 6.06 6"
+            />
+          </svg>
+          <span class="sr-only">Close menu</span>
+        </button>
+      </div>
+      <div class="py-5 overflow-y-auto">
+        <div class="filterByCategories">
+          <h3>Categories</h3>
+          <ul>
+            @for (item of categories(); track $index) {
+              <li class="my-2">
+                <input
+                  type="radio"
+                  id="{{ item._id }}"
+                  name="category"
+                  value="{{ item.name }}"
+                  (click)="filterProductsByCategory($event.target.value)"
+                  [checked]="selectedCategory() === item.name"
+                />
+                <label for="{{ item._id }}" class="ms-2">{{ item.name }}</label>
+              </li>
+            }
+          </ul>
+        </div>
+        <div class="filterByBrands">
+          <h3>Brands</h3>
+          <ul>
+            @for (brand of brands(); track $index) {
+              <li class="my-2">
+                <input
+                  type="radio"
+                  id="{{ brand._id }}"
+                  name="brand"
+                  value="{{ brand.name }}"
+                  (click)="filterByBrand($event.target.value)"
+                  [checked]="selectedBrand() === brand.name"
+                />
+                <label for="{{ brand._id }}" class="ms-2">{{ brand.name }}</label>
+              </li>
+            }
+          </ul>
+        </div>
+        <div class="clearFilter">
+          <button class="btn cursor-pointer mt-4" (click)="clearFilters()">Clear Filters</button>
+        </div>
+      </div>
+    </div>
+    <div class="w-full mt-8 px-4">
+      <div
+        class="flex flex-col md:flex-row items-center gap-4 bg-gray-50/50 p-4 rounded-2xl backdrop-blur-sm border border-gray-100 shadow-sm"
+      >
+        <div class="relative w-full md:flex-2">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg
+              class="h-5 w-5 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+          <input
+            type="text"
+            placeholder="Search by name..."
+            class="w-full pl-10 pr-4 py-3 bg-white border-none rounded-xl shadow-inner focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 outline-none text-gray-700 placeholder-gray-400"
+            (input)="productsBySearch($event.target.value)"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-12 justify-between gap-2.5 mt-2.5">
+      @if (isLoading()) {
+        <div class="flex items-center justify-center col-span-12">
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"
+          ></div>
+        </div>
+      } @else if (!isLoading() && products().length > 0) {
+        @for (item of products(); track $index) {
+          <app-card
+            [item]="item"
+            class="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2 card"
+          ></app-card>
+        } @empty {
+          <p class="text-gray-400 text-center col-span-12">No products found</p>
+        }
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,226 @@
+<div class="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-6 lg:px-8 font-sans">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div
+      class="mx-auto h-12 w-12 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-2xl flex items-center justify-center shadow-xl transform rotate-3 hover:rotate-0 transition-transform duration-300"
+    >
+      <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+        />
+      </svg>
+    </div>
+    <h2 class="mt-6 text-center text-3xl font-black text-slate-900 tracking-tight">
+      Sign in to your account
+    </h2>
+    <p class="mt-2 text-center text-sm text-slate-500">
+      Or
+      <a
+        href="/register"
+        class="font-medium text-indigo-600 hover:text-indigo-500 underline decoration-2"
+        >create a new account</a
+      >
+    </p>
+  </div>
+
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-xl">
+    <div
+      class="bg-white py-10 px-8 shadow-[0_20px_50px_rgba(79,70,229,0.1)] rounded-3xl border border-slate-100"
+    >
+      <form class="space-y-6" [formGroup]="loginForm" (submit)="onSubmit()">
+        <div class="grid grid-cols-1 gap-6">
+          <div class="col-span-1">
+            <label
+              for="email"
+              class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1"
+              >Email Address</label
+            >
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email"
+              required
+              formControlName="email"
+              class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+            />
+
+            @if (loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']) {
+              <div
+                class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+                role="alert"
+              >
+                <svg
+                  class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+                <p>Your email is required.</p>
+              </div>
+            } @else if (
+              loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['pattern']
+            ) {
+              <div
+                class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+                role="alert"
+              >
+                <svg
+                  class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+                <p>Your email is not valid.</p>
+              </div>
+            }
+          </div>
+
+          <div class="col-span-1">
+            <label
+              for="password"
+              class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1"
+              >Password</label
+            >
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="write strong password"
+              required
+              formControlName="password"
+              class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+            />
+
+            @if (
+              loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']
+            ) {
+              <div
+                class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+                role="alert"
+              >
+                <svg
+                  class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+                <p>Your password is required.</p>
+              </div>
+            } @else if (
+              loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['pattern']
+            ) {
+              <div
+                class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+                role="alert"
+              >
+                <svg
+                  class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+                <p>
+                  Your password is not valid.Must be at least 8 characters with uppercase with first
+                  letter, lowercase and number.
+                </p>
+              </div>
+            } @else if (
+              loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']
+            ) {
+              <div
+                class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+                role="alert"
+              >
+                <svg
+                  class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+                <p>Your password is too short.Must have at least 8 characters.</p>
+              </div>
+            }
+          </div>
+
+          <div class="showPassword">
+            <input type="checkbox" id="showPassword" (click)="togglePasswordVisibility($event)" />
+            <label class="text-sm text-slate-600 ms-2" for="showPassword">Show Password</label>
+          </div>
+        </div>
+
+        <button
+          class="btn w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          type="submit"
+          [disabled]="loginForm.invalid || isLoading()"
+        >
+          @if (isLoading()) {
+            <span class="flex items-center justify-center gap-2">
+              <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+              <span>Logging in...</span>
+            </span>
+          } @else {
+            <span>Login</span>
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

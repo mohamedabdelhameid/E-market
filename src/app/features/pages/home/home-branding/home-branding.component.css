@@ -1,0 +1,79 @@
+.carousel {
+  margin: 0 auto;
+  padding: 20px 0;
+  max-width: 700px;
+  overflow: hidden;
+  display: flex;
+  * {
+    flex: 0 0 100%;
+  }
+
+  &:hover .group {
+    animation-play-state: paused;
+  }
+}
+
+.card {
+  width: 100%;
+  color: white;
+  border-radius: 24px;
+  box-shadow: rgba(0, 0, 0, 10%) 5px 5px 20px 0;
+  padding: 20px;
+  font-size: xx-large;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+
+  &:nth-child(1) {
+    background: #7958ff;
+  }
+
+  &:nth-child(2) {
+    background: #5d34f2;
+  }
+
+  &:nth-child(3) {
+    background: #4300da;
+  }
+}
+.group {
+  display: flex;
+  gap: 20px;
+  padding-right: 20px;
+
+  will-change: transform;
+  animation: scrolling 10s linear infinite;
+}
+
+@keyframes scrolling {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.marquee div {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

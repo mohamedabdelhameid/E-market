@@ -1,0 +1,16 @@
+<div class="mt-2.5">
+  <p class="text-5xl text-gray-500">Some Brands</p>
+  <div class="brands-container container mx-auto grid grid-cols-12 justify-between">
+    @defer (on viewport) {
+      @for (item of brands().slice(0, 12); track $index) {
+        <div class="brand-item col-span-2 p-2.5 cursor-pointer">
+          <img [src]="item.image" class="w-full" [alt]="item.name" />
+        </div>
+      }
+    } @placeholder {
+      <p class="text-gray-400">loading...</p>
+    } @loading {
+      <p class="text-gray-400">loading...</p>
+    }
+  </div>
+</div>

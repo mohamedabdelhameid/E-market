@@ -1,0 +1,7 @@
+@reference "tailwindcss";
+
+@layer active-link {
+  .activeLink {
+    @apply text-blue-700;
+  }
+}

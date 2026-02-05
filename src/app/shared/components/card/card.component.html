@@ -1,0 +1,126 @@
+<div
+  class="w-full relative max-w-sm bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs mx-auto"
+>
+  <div
+    class="heartContainer absolute top-4 right-4 text-gray-500 hover:text-red-500 transition cursor-pointer text-xl"
+    (click)="addProductToWishlist(item()?.id!)"
+  >
+    <span class="flex items-center justify-center gap-2">
+      @if (isLoadingWishList()) {
+        <i class="fa-solid fa-spinner fa-spin"></i>
+      } @else if (productFounded() === true && !isLoadingWishList()) {
+        <i
+          class="fa-solid fa-heart-circle-minus text-red-500"
+          [class.text-red-500]="productFounded() === true"
+        ></i>
+      } @else if (productFounded() === false && !isLoadingWishList()) {
+        <i
+          class="fa-solid fa-heart-circle-plus text-gray-500"
+          [class.text-red-500]="!productFounded() === false"
+        ></i>
+      }
+    </span>
+  </div>
+
+  <a [routerLink]="['/products', item()?._id]">
+    <img class="rounded-base mb-6" [src]="item()?.imageCover" alt="product image" />
+  </a>
+  <div>
+    <div class="flex items-center space-x-3 mb-6">
+      <div class="flex items-center space-x-1 rtl:space-x-reverse">
+        <svg
+          class="w-5 h-5 text-fg-yellow"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"
+          />
+        </svg>
+        <svg
+          class="w-5 h-5 text-fg-yellow"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"
+          />
+        </svg>
+        <svg
+          class="w-5 h-5 text-fg-yellow"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"
+          />
+        </svg>
+        <svg
+          class="w-5 h-5 text-fg-yellow"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"
+          />
+        </svg>
+        <svg
+          class="w-5 h-5 text-fg-yellow"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"
+          />
+        </svg>
+      </div>
+      <span
+        class="bg-brand-softer border border-brand-subtle text-fg-brand-strong text-xs font-medium px-1.5 py-0.5 rounded-sm"
+        >{{ item()?.ratingsAverage }} of {{ item()?.ratingsQuantity }}</span
+      >
+    </div>
+    <h6 class="text-xl text-heading font-semibold tracking-tight line-clamp-1">
+      {{ item()?.title }}
+    </h6>
+    <div class="flex items-center justify-between mt-6">
+      <span class="text-3xl font-extrabold text-blue-800">{{
+        item()?.price | currency: 'EUR'
+      }}</span>
+    </div>
+    <button
+      type="button"
+      class="btn cursor-pointer w-full mt-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+      [disabled]="addProductLoading()"
+      (click)="!addProductLoading() && addProductToCart(item()?.id!)"
+    >
+      @if (addProductLoading() && selected() === item()?.id) {
+        <span class="flex items-center justify-center gap-2">
+          <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+          <span>Adding...</span>
+        </span>
+      } @else {
+        <span>Add to Cart</span>
+      }
+    </button>
+  </div>
+</div>

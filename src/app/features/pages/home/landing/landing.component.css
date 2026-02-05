@@ -1,0 +1,7 @@
+.custom-landing{
+  background-image: url("../../../../../../public/assests/landing-bg.avif");
+  min-height: 70vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}

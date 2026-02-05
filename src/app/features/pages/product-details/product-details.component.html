@@ -1,0 +1,129 @@
+@defer (on viewport) {
+  <div class="container mx-auto px-4 py-12">
+    @if (productDetail()) {
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 justify-center items-center h-full">
+        <div class="flex gap-4">
+          <div class="flex flex-col gap-3">
+            @for (img of productDetail()?.images; track img) {
+              <img
+                [src]="img"
+                class="w-20 h-20 object-cover rounded-xl cursor-pointer border hover:border-black transition"
+              />
+            }
+          </div>
+
+          <div class="flex-1 bg-white rounded-2xl shadow-lg p-6 flex items-center justify-center">
+            <img
+              [src]="productDetail()?.imageCover"
+              class="max-h-105 object-contain transition-transform duration-300 hover:scale-105"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-6">
+          <h1 class="text-3xl font-bold text-gray-800">
+            {{ productDetail()?.title }}
+          </h1>
+
+          <div class="flex items-center gap-4">
+            <img [src]="productDetail()?.brand?.image" class="w-12 h-12 object-contain" />
+            <div>
+              <p class="font-semibold">{{ productDetail()?.brand?.name }}</p>
+              <p class="text-sm text-gray-500">
+                {{ productDetail()?.category?.name }}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="text-yellow-400 text-lg">⭐ ⭐ ⭐ ⭐</div>
+            <span class="text-gray-600 text-sm">
+              {{ productDetail()?.ratingsAverage }} / 5 ({{ productDetail()?.ratingsQuantity }}
+              reviews)
+            </span>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <span class="text-4xl font-extrabold text-green-600">
+              {{ productDetail()?.price }} EGP
+            </span>
+            <span class="line-through text-gray-400">
+              {{ productDetail()?.price | currency: 'EUR' }}
+            </span>
+          </div>
+
+          <div>
+            <h3 class="font-semibold mb-2">Description</h3>
+            <p class="text-gray-600 whitespace-pre-line">
+              {{ productDetail()?.description }}
+            </p>
+          </div>
+
+          <div class="flex gap-6 text-sm">
+            @if (productDetail()!.quantity > 0) {
+              <span
+                class="inline-flex items-center gap-2 px-3 py-1 text-sm font-semibold text-green-700 bg-green-100 rounded-full"
+              >
+                Available
+              </span>
+            } @else {
+              <span
+                class="inline-flex items-center gap-2 px-3 py-1 text-sm font-semibold text-red-700 bg-red-100 rounded-full"
+              >
+                Out of Stock
+              </span>
+            }
+          </div>
+
+          <div class="flex gap-4 mt-6">
+            <button
+              class="btn cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="addProductLoading()"
+              (click)="!addProductLoading() && addProductToCart(productDetail()?.id!)"
+            >
+              @if (addProductLoading()) {
+                <span class="flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+                  <span>Adding...</span>
+                </span>
+              } @else {
+                <span>Add to Cart</span>
+              }
+            </button>
+
+            <button
+              class="px-6 py-4 rounded-xl border border-gray-300 hover:bg-gray-100 transition cursor-pointer"
+              [disabled]="isLoadingWishList()"
+              (click)="!isLoadingWishList() && addProductToWishlist(productDetail()?.id!)"
+            >
+              @if (isLoadingWishList()) {
+                <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+              } @else if (productFounded()) {
+                remove from wishlist
+              } @else {
+                Add to wishlist
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="container w-full text-center">
+        <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+        <span class="text-center text-gray-400 py-10">Loading product details...</span>
+      </div>
+    }
+    <app-home-branding></app-home-branding>
+    <app-home-products></app-home-products>
+  </div>
+} @placeholder {
+  <div class="container mx-auto w-full text-center">
+    <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+    <span class="text-center text-gray-400 py-10">Loading product details...</span>
+  </div>
+} @loading {
+  <div class="container mx-auto w-full text-center">
+    <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+    <span class="text-center text-gray-400 py-10">Loading product details...</span>
+  </div>
+}
