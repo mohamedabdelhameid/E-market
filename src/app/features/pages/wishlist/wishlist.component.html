@@ -17,6 +17,11 @@
           [item]="item"
           class="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-3 card"
         ></app-card>
+      } @empty {
+        <div class="text-center py-20 col-span-12 text-gray-500">
+          <p class="text-lg">Your wishlist is empty</p>
+          <p class="text-sm mt-2">Start adding products you love 💖</p>
+        </div>
       }
     } @placeholder {
       <p class="text-gray-400">loading...</p>

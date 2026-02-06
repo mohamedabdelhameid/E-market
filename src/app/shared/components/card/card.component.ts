@@ -4,7 +4,7 @@ import {
   computed,
   inject,
   input,
-  Input,
+  Output,
   Signal,
   signal,
   WritableSignal,
@@ -17,6 +17,7 @@ import { CartServices } from '../../../features/services/cartServices/cart.servi
 import { Iproduct } from '../../../core/interfaces/products/iproduct.interface';
 import { WishlistServices } from '../../../features/services/wishlistServices/wishlist.services';
 import { Iwishlist } from '../../../core/interfaces/wishlistInterfaces/iwishlist.interfaces';
+import { EventEmitter } from 'stream';
 
 @Component({
   selector: 'app-card',
@@ -41,9 +42,12 @@ export class CardComponent {
   productFounded!: Signal<boolean>;
   added: WritableSignal<boolean> = signal(false);
 
-  ngAfterContentChecked(): void {
-    //Called after every check of the component's or directive's content.
-    //Add 'implements AfterContentChecked' to the class.
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    if (localStorage.getItem('token')) {
+      this.getWishlistProducts();
+    }
     this.checkFounded();
   }
 
@@ -86,12 +90,6 @@ export class CardComponent {
         this.addProductLoading.set(false);
       },
     });
-  }
-
-  ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    this.getWishlistProducts();
   }
 
   getWishlistProducts(): void {
@@ -196,42 +194,4 @@ export class CardComponent {
       });
     }
   }
-
-  // removeProductFromWishlist(productId: string): void {
-  //   this.selectedWishlist.set(productId);
-  //   // this.removed.set(false);
-  //   this.isLoadingWishList.set(true);
-  //   this.wishlistServices.removeProductFromWishlist(productId).subscribe({
-  //     next: (res: Iwishlist) => {
-  //       this.toastr.warning(`Successfully removed from favorite`, `${res.status}`, {
-  //         progressBar: true,
-  //         progressAnimation: 'decreasing',
-  //         timeOut: 3000,
-  //       });
-  //       this.wishlistProducts.set(res.data);
-  //       // this.getWishlistProducts();
-  //       // this.checkIfFounded();
-  //       this.isLoadingWishList.set(false);
-  //     },
-  //     error: (err: Ierror) => {
-  //       if (err.status === 401) {
-  //         this.toastr.error(`${err.error.message}`, `${err.error.statusMsg}`, {
-  //           progressBar: true,
-  //           progressAnimation: 'decreasing',
-  //           timeOut: 3000,
-  //         });
-  //         setTimeout(() => {
-  //           window.location.href = '/login';
-  //         }, 3000);
-  //       } else {
-  //         this.toastr.error(`${err.error.message}`, `${err.error.statusMsg}`, {
-  //           progressBar: true,
-  //           progressAnimation: 'decreasing',
-  //           timeOut: 3000,
-  //         });
-  //       }
-  //       this.isLoadingWishList.set(false);
-  //     },
-  //   });
-  // }
 }

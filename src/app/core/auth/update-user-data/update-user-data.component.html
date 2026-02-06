@@ -1,0 +1,297 @@
+@if (userToken() !== null) {
+  <div class="min-h-[80vh] flex items-center justify-center px-4">
+    <div class="w-full max-w-md bg-white border border-gray-200 rounded-2xl shadow-lg p-8">
+      <h2 class="text-3xl font-bold text-gray-800 text-center mb-2">Update Profile</h2>
+      <p class="text-gray-500 text-center mb-6">Edit your account information</p>
+
+      <form class="space-y-5" [formGroup]="updateDataForm" (submit)="onSubmit()">
+        <div class="col-span-1">
+          <label
+            for="name"
+            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1"
+            >Full Name</label
+          >
+          <input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="name"
+            required
+            formControlName="name"
+            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all placeholder:text-slate-400"
+          />
+          @if (
+            updateDataForm.get('name')?.touched && updateDataForm.get('name')?.errors?.['required']
+          ) {
+            <div
+              class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+              role="alert"
+            >
+              <svg
+                class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <p>Your name is required.</p>
+            </div>
+          } @else if (
+            updateDataForm.get('name')?.touched && updateDataForm.get('name')?.errors?.['minlength']
+          ) {
+            <div
+              class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+              role="alert"
+            >
+              <svg
+                class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <p>Your name is too short.</p>
+            </div>
+          } @else if (
+            updateDataForm.get('name')?.touched && updateDataForm.get('name')?.errors?.['pattern']
+          ) {
+            <div
+              class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+              role="alert"
+            >
+              <svg
+                class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <p>Your name is not valid.</p>
+            </div>
+          }
+        </div>
+
+        <div class="col-span-1">
+          <label
+            for="email"
+            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1"
+            >Email Address</label
+          >
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Email"
+            required
+            formControlName="email"
+            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+          />
+
+          @if (
+            updateDataForm.get('email')?.touched &&
+            updateDataForm.get('email')?.errors?.['required']
+          ) {
+            <div
+              class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+              role="alert"
+            >
+              <svg
+                class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <p>Your email is required.</p>
+            </div>
+          } @else if (
+            updateDataForm.get('email')?.touched && updateDataForm.get('email')?.errors?.['pattern']
+          ) {
+            <div
+              class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+              role="alert"
+            >
+              <svg
+                class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <p>Your email is not valid.</p>
+            </div>
+          }
+        </div>
+
+        <div class="col-span-1">
+          <label
+            for="phone"
+            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1"
+            >Phone Number</label
+          >
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            placeholder="phone number"
+            required
+            formControlName="phone"
+            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+          />
+          @if (
+            updateDataForm.get('phone')?.touched &&
+            updateDataForm.get('phone')?.errors?.['required']
+          ) {
+            <div
+              class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+              role="alert"
+            >
+              <svg
+                class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <p>Your phone is required.</p>
+            </div>
+          } @else if (
+            updateDataForm.get('phone')?.touched && updateDataForm.get('phone')?.errors?.['pattern']
+          ) {
+            <div
+              class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+              role="alert"
+            >
+              <svg
+                class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <p>Your phone is not valid.</p>
+            </div>
+          } @else if (
+            updateDataForm.get('phone')?.touched &&
+            updateDataForm.get('phone')?.errors?.['minlength']
+          ) {
+            <div
+              class="flex items-start sm:items-center px-4 mb-0.5 text-sm mt-1.5 text-fg-danger-strong rounded-base"
+              role="alert"
+            >
+              <svg
+                class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <p>Your phone is not correct.</p>
+            </div>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold cursor-pointer hover:bg-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="isLoading() || !updateDataForm.valid"
+          (click)="onSubmit()"
+        >
+          @if (isLoading()) {
+            <i class="fa-solid fa-spinner fa-spin-pulse"></i> Updating...
+          } @else {
+            Update Profile
+          }
+        </button>
+      </form>
+
+      <div class="mt-6 text-center">
+        <a routerLink="/profile" class="text-sm text-blue-600 hover:underline"> Back to Profile </a>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="text-center">
+    <p>You are not user in this app. please login to continue.</p>
+  </div>
+}

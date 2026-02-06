@@ -2,7 +2,7 @@ import { AuthServices } from './../../../core/services/authServices/auth.service
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { Ierror } from '../../../core/interfaces/errorInterface/ierror.interfaces';
 import { OrderServices } from '../../services/orderServices/order.services';
-import { JWTDecode } from '../../../core/interfaces/authInterface/auth.interface';
+import { IAllUsers, JWTDecode } from '../../../core/interfaces/authInterface/auth.interface';
 import { ToastUtilService } from '../../../core/services/toastrServices/toastr.services';
 import { IUserOrder } from '../../../core/interfaces/userOrderInterfaces/iuser-order.interfaces';
 import { CurrencyPipe, DatePipe } from '@angular/common';
@@ -19,12 +19,25 @@ export class OrdersComponent {
   readonly router = inject(Router);
   private readonly authServices = inject(AuthServices);
   userData: WritableSignal<JWTDecode> = signal({} as JWTDecode);
+  user: WritableSignal<IAllUsers> = signal({} as IAllUsers);
   toastr = inject(ToastUtilService);
   userOrderProducts: WritableSignal<IUserOrder[] | null> = signal(null);
 
   ngOnInit(): void {
-    this.userData.set((this.authServices.decodeUserData() as JWTDecode) || {});
+    this.userData.set(this.authServices.decodeUserData() as JWTDecode);
     this.getUserOrders();
+    this.findUserData();
+  }
+
+  findUserData(): void {
+    this.authServices.getAllUsers().subscribe({
+      next: (res) => {
+        this.user.set(res.users?.find((u) => u._id === this.userData().id)!);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   getUserOrders(): void {

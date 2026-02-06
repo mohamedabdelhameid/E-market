@@ -1,22 +1,23 @@
-import { Component, inject, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { AuthServices } from '../../services/authServices/auth.services';
 import { isPlatformBrowser } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { ToastUtilService } from '../../services/toastrServices/toastr.services';
+import { Component, inject, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Ierror } from '../../interfaces/errorInterface/ierror.interfaces';
+import { AuthServices } from '../../services/authServices/auth.services';
+import { ToastUtilService } from '../../services/toastrServices/toastr.services';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  selector: 'app-reset-password',
+  imports: [ReactiveFormsModule],
+  templateUrl: './reset-password.component.html',
+  styleUrl: './reset-password.component.css',
 })
-export class LoginComponent {
-  loginForm!: FormGroup;
+export class ResetPasswordComponent {
+  resetPasswordForm!: FormGroup;
   authSubscription!: Subscription;
   isLoading: WritableSignal<boolean> = signal(false);
+  userToken: WritableSignal<string | null> = signal(null);
   toastr = inject(ToastUtilService);
   private readonly fb = inject(FormBuilder);
   private authServices = inject(AuthServices);
@@ -25,10 +26,19 @@ export class LoginComponent {
 
   ngOnInit() {
     this.initializeForm();
+    this.checkUserFound();
+  }
+
+  checkUserFound() {
+    if (localStorage.getItem('token') === null) {
+      this.userToken.set(null);
+    } else {
+      this.userToken.set(localStorage.getItem('token'));
+    }
   }
 
   initializeForm() {
-    this.loginForm = this.fb.group({
+    this.resetPasswordForm = this.fb.group({
       email: [
         '',
         [
@@ -37,7 +47,7 @@ export class LoginComponent {
           Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
         ],
       ],
-      password: [
+      newPassword: [
         null,
         [
           Validators.required,
@@ -58,11 +68,11 @@ export class LoginComponent {
 
   onSubmit() {
     this.isLoading.set(true);
-    if (this.loginForm.valid) {
+    if (this.resetPasswordForm.valid) {
       this.authSubscription?.unsubscribe();
-      this.authSubscription = this.authServices.login(this.loginForm.value).subscribe({
+      this.authSubscription = this.authServices.resetCode(this.resetPasswordForm.value).subscribe({
         next: (res) => {
-          this.toastr.success(`Successful login`, 'Success', {
+          this.toastr.success(`Successful reset password`, 'Success', {
             progressBar: true,
             progressAnimation: 'decreasing',
             timeOut: 3000,
@@ -87,7 +97,7 @@ export class LoginComponent {
         },
       });
     } else {
-      this.loginForm.markAllAsTouched();
+      this.resetPasswordForm.markAllAsTouched();
     }
   }
 }

@@ -23,7 +23,7 @@ export class NavbarComponent {
     //Add 'implements OnInit' to the class.
 
     this.checkUserLogin();
-    this.getUserData();
+    // this.getUserData();
   }
 
   checkUserLogin() {
@@ -37,9 +37,9 @@ export class NavbarComponent {
     }
   }
 
-  getUserData() {
-    this.userDataDecoded.set(this.authServices.decodeUserData());
-  }
+  // getUserData() {
+  //   this.userDataDecoded.set(this.authServices.decodeUserData());
+  // }
 
   signOut() {
     if (isPlatformBrowser(this.platformID)) {

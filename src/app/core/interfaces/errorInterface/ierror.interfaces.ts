@@ -24,4 +24,10 @@ export interface NormalizedNames {}
 export interface Error {
   statusMsg: string;
   message: string;
+  errors?: {
+    location: string;
+    msg: string;
+    param: string;
+    value: string;
+  };
 }

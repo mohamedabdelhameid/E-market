@@ -1,3 +1,5 @@
+import { Metadata } from '../../../shared/interfaces/result/iresult.interface';
+
 export interface SignUpAuth {
   name: string;
   email: string;
@@ -8,14 +10,18 @@ export interface SignUpAuth {
 
 export interface UserRoot<T> {
   message: string;
-  user: T;
+  user?: T;
   token: string;
+  users?: T;
+  totalUsers?: number;
+  metadata?: Metadata;
 }
 
 export interface User {
   name: string;
   email: string;
   role: string;
+  phone?: string;
 }
 
 export interface ILogin {
@@ -29,4 +35,16 @@ export interface JWTDecode {
   role: string;
   iat: number;
   exp: number;
+}
+
+export interface UpdatePassword {
+  currentPassword: string;
+  password: string;
+  rePassword: string;
+}
+
+export interface IAllUsers {
+  name: string;
+  email: string;
+  _id: string;
 }
