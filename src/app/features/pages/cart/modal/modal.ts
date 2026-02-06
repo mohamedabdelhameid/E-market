@@ -103,8 +103,6 @@ export class Modal {
         .orderCOD(this.cartId, this.checkoutForm.value)
         .subscribe({
           next: (res: PaymentOrder) => {
-            console.log(res);
-
             this.toastr.success(`Successful order`, 'Success', {
               progressBar: true,
               progressAnimation: 'decreasing',

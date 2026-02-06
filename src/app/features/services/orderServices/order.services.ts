@@ -4,6 +4,7 @@ import { Iorder, PaymentOrder } from '../../../core/interfaces/ordersInterfaces/
 import { STORED_KEY } from '../../../core/static/static';
 import { ApiLink } from '../../../core/environment/links/api-link.environment';
 import { Observable } from 'rxjs';
+import { IUserOrder } from '../../../core/interfaces/userOrderInterfaces/iuser-order.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +12,8 @@ import { Observable } from 'rxjs';
 export class OrderServices {
   private readonly httpClient = inject(HttpClient);
 
-  getUserOrders(userId: string): Observable<Iorder> {
-    return this.httpClient.get<Iorder>(ApiLink.apiLink + `orders/user/${userId}`, {
+  getUserOrders(userId: string): Observable<IUserOrder[]> {
+    return this.httpClient.get<IUserOrder[]>(ApiLink.apiLink + `orders/user/${userId}`, {
       headers: { [STORED_KEY.token]: localStorage.getItem(STORED_KEY.token) || '' },
     });
   }

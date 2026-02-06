@@ -8,7 +8,8 @@ import { LoginComponent } from './core/auth/login/login.component';
 import { guestGuardGuard } from './core/guards/guestGuards/guest-guard-guard';
 import { CartComponent } from './features/pages/cart/cart.component';
 import { WishlistComponent } from './features/pages/wishlist/wishlist.component';
-import { ProfileComponent } from './features/pages/profile/profile.component';
+import { OrdersComponent } from './features/pages/orders & profile/orders.component';
+import { OrderDetailsComponent } from './features/pages/orders & profile/order-details/order-details.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -17,7 +18,8 @@ export const routes: Routes = [
   { path: 'about-us', component: AboutUsComponent, title: 'About US' },
   { path: 'products', component: ProductsComponent, title: 'Products' },
   { path: 'cart', component: CartComponent, title: 'Cart' },
-  { path: 'profile', component: ProfileComponent, title: 'Profile' },
+  { path: 'my-profile', component: OrdersComponent, title: 'My profile' },
+  { path: 'order/:id', component: OrderDetailsComponent, title: 'order details' },
   {
     path: 'wishlist',
     component: WishlistComponent,

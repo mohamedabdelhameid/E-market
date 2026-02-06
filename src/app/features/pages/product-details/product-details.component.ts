@@ -30,6 +30,7 @@ export class ProductDetailsComponent {
   private readonly wishlistServices = inject(WishlistServices);
   isLoadingWishList: WritableSignal<boolean> = signal(false);
   selectedWishlist: WritableSignal<string | null> = signal(null);
+  selectedImgCover: WritableSignal<string | null> = signal(null);
   wishlistProducts: WritableSignal<Iproduct[]> = signal([]);
   productFounded!: Signal<boolean>;
   added: WritableSignal<boolean> = signal(false);
@@ -210,5 +211,9 @@ export class ProductDetailsComponent {
         },
       });
     }
+  }
+
+  changeImgCover(pathImg: string): void {
+    this.selectedImgCover.set(pathImg);
   }
 }

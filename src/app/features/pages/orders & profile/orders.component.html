@@ -1,0 +1,166 @@
+@if (userOrderProducts()) {
+  <div class="min-h-[70vh] bg-gray-50 p-6">
+    <div class="max-w-5xl mx-auto space-y-6">
+      <div class="bg-white rounded-2xl border border-gray-200 p-6">
+        <div class="flex items-center gap-4 mb-6">
+          <div
+            class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+              alt="User"
+              class="w-full h-full object-cover"
+            />
+          </div>
+
+          <!-- Name -->
+          <div>
+            <h3 class="text-lg font-bold text-gray-800">
+              {{ userOrderProducts()?.[0]?.user?.name }}
+            </h3>
+            <p class="text-sm text-gray-500">Account Information</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div>
+            <p class="text-gray-500">Email</p>
+            <p class="font-semibold text-gray-800">{{ userOrderProducts()?.[0]?.user?.email }}</p>
+          </div>
+
+          <div>
+            <p class="text-gray-500">Phone</p>
+            <p class="font-semibold text-gray-800">{{ userOrderProducts()?.[0]?.user?.phone }}</p>
+          </div>
+
+          <div>
+            <p class="text-gray-500">City</p>
+            <p class="font-semibold text-gray-800">
+              {{ userOrderProducts()?.[0]?.shippingAddress?.city }}
+            </p>
+          </div>
+
+          <div>
+            <p class="text-gray-500">Role</p>
+            <p class="font-semibold text-gray-800">User</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between my-6">
+          <h2 class="text-2xl font-bold text-gray-800">Account Actions</h2>
+          <span class="text-sm text-gray-500">Manage your account</span>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Action -->
+          <div
+            class="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:shadow transition cursor-pointer"
+          >
+            <div>
+              <p class="font-semibold text-gray-700">Forgot Password</p>
+              <p class="text-sm text-gray-500">Send reset password email</p>
+            </div>
+          </div>
+
+          <!-- Action -->
+          <div
+            class="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:shadow transition cursor-pointer"
+          >
+            <div>
+              <p class="font-semibold text-gray-700">Update Password</p>
+              <p class="text-sm text-gray-500">Change your current password</p>
+            </div>
+          </div>
+
+          <!-- Action -->
+          <div
+            class="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:shadow transition cursor-pointer"
+          >
+            <div>
+              <p class="font-semibold text-gray-700">Reset Password</p>
+              <p class="text-sm text-gray-500">Reset your current password</p>
+            </div>
+          </div>
+
+          <!-- Action -->
+          <div
+            class="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:shadow transition cursor-pointer"
+          >
+            <div>
+              <p class="font-semibold text-gray-700">Update Profile</p>
+              <p class="text-sm text-gray-500">Edit your personal information</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="min-h-[30vh] flex items-center justify-center bg-gray-50 px-4">
+        <div class="w-full max-w-3xl bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">My Orders</h2>
+            <span class="text-sm text-gray-500"
+              >Total: {{ userOrderProducts()?.length }} orders</span
+            >
+          </div>
+
+          <div class="space-y-4">
+            @for (order of userOrderProducts(); track $index) {
+              <div
+                class="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:shadow transition cursor-pointer"
+                (click)="router.navigate([`order/${order._id}`])"
+              >
+                <div>
+                  <p class="font-semibold text-gray-700">Order #{{ order.id }}</p>
+                  <p class="text-sm text-gray-500">{{ order.createdAt | date: 'mediumDate' }}</p>
+                </div>
+                <div class="text-right">
+                  <p class="font-bold text-gray-800">
+                    {{ order.totalOrderPrice | currency: 'EUR' }}
+                  </p>
+                  <div class="mt-2">
+                    <span
+                      class="text-xs px-3 py-1 mx-2 my-3 rounded-full"
+                      [class.text-green-700]="userOrderProducts()?.[0]?.isPaid"
+                      [class.bg-green-100]="userOrderProducts()?.[0]?.isPaid"
+                      [class.bg-red-100]="!userOrderProducts()?.[0]?.isPaid"
+                      [class.text-red-700]="!userOrderProducts()?.[0]?.isPaid"
+                    >
+                      {{ userOrderProducts()?.[0]?.isPaid ? 'paid' : 'unpaid' }}
+                    </span>
+                    <span
+                      class="text-xs px-3 py-1 mx-2 my-3 rounded-full"
+                      [class.text-green-700]="userOrderProducts()?.[0]?.isDelivered"
+                      [class.bg-green-100]="userOrderProducts()?.[0]?.isDelivered"
+                      [class.bg-red-100]="!userOrderProducts()?.[0]?.isDelivered"
+                      [class.text-red-700]="!userOrderProducts()?.[0]?.isDelivered"
+                    >
+                      {{ userOrderProducts()?.[0]?.isDelivered ? 'delivered' : 'not delivered' }}
+                    </span>
+                    <span
+                      class="text-xs px-3 py-1 mx-2 my-3 rounded-full bg-green-100 text-green-700"
+                    >
+                      {{ userOrderProducts()?.[0]?.paymentMethodType === 'card' ? 'card' : 'COD' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else if (userOrderProducts() === null) {
+  <div class="min-h-[70vh] flex items-center justify-center">
+    <p class="text-gray-500 text-lg">Loading your orders...</p>
+  </div>
+} @else {
+  <div class="text-center">
+    <p>
+      User Not Found!!! please press
+      <a routerLink="/login" class="text-gray-900 cursor-pointer">login</a> if you have account else
+      press
+      <a routerLink="/register">register</a>
+    </p>
+  </div>
+}

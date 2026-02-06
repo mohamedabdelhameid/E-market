@@ -1,0 +1,147 @@
+@if (specificOrderProducts()) {
+  <div class="min-h-[70vh] bg-gray-50 p-6">
+    <div class="max-w-5xl mx-auto space-y-6">
+      <div class="bg-white rounded-2xl border border-gray-200 p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-800">Order Details</h2>
+            <p class="text-sm text-gray-500">Order ID: #{{ specificOrderProducts()?.[0]?.id }}</p>
+          </div>
+
+          <div class="mt-2">
+            <span
+              class="text-xs px-3 py-1 mx-2 my-3 rounded-full"
+              [class.text-green-700]="specificOrderProducts()?.[0]?.isPaid"
+              [class.bg-green-100]="specificOrderProducts()?.[0]?.isPaid"
+              [class.bg-red-100]="!specificOrderProducts()?.[0]?.isPaid"
+              [class.text-red-700]="!specificOrderProducts()?.[0]?.isPaid"
+            >
+              {{ specificOrderProducts()?.[0]?.isPaid ? 'paid' : 'unpaid' }}
+            </span>
+            <span
+              class="text-xs px-3 py-1 mx-2 my-3 rounded-full"
+              [class.text-green-700]="specificOrderProducts()?.[0]?.isDelivered"
+              [class.bg-green-100]="specificOrderProducts()?.[0]?.isDelivered"
+              [class.bg-red-100]="!specificOrderProducts()?.[0]?.isDelivered"
+              [class.text-red-700]="!specificOrderProducts()?.[0]?.isDelivered"
+            >
+              {{ specificOrderProducts()?.[0]?.isDelivered ? 'delivered' : 'not delivered' }}
+            </span>
+            <span class="text-xs px-3 py-1 mx-2 my-3 rounded-full bg-green-100 text-green-700">
+              {{ specificOrderProducts()?.[0]?.paymentMethodType === 'card' ? 'card' : 'COD' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shipping Info -->
+      <div class="bg-white rounded-2xl border border-gray-200 p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Shipping Address</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div>
+            <p class="text-gray-500">City</p>
+            <p class="font-semibold text-gray-800">
+              {{ specificOrderProducts()?.[0]?.shippingAddress?.city }}
+            </p>
+          </div>
+
+          <div>
+            <p class="text-gray-500">Phone</p>
+            <p class="font-semibold text-gray-800">
+              {{ specificOrderProducts()?.[0]?.shippingAddress?.phone }}
+            </p>
+          </div>
+
+          <div>
+            <p class="text-gray-500">Details</p>
+            <p class="font-semibold text-gray-800">
+              {{ specificOrderProducts()?.[0]?.shippingAddress?.details }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products -->
+      <div class="bg-white rounded-2xl border border-gray-200 p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Order Items</h3>
+
+        <div class="space-y-4">
+          @for (productItem of specificOrderProducts()?.[0]?.cartItems; track $index) {
+            <div class="flex items-center gap-4 p-4 border border-gray-100 rounded-xl">
+              <div class="w-20 h-20 bg-gray-100 rounded-lg">
+                <img
+                  [src]="productItem?.product?.imageCover"
+                  alt="{{ productItem?.product?.title }}"
+                  class="w-full h-full object-cover rounded-lg cursor-pointer"
+                  (click)="router.navigate([`products/${productItem?.product?.id}`])"
+                />
+              </div>
+
+              <div class="flex-1">
+                <p class="font-semibold text-gray-800">{{ productItem?.product?.title }}</p>
+                <p class="text-sm text-gray-500">
+                  {{ productItem?.product?.brand?.name }} •
+                  {{ productItem?.product?.category?.name }}
+                </p>
+                <p class="text-sm text-gray-500">Quantity: {{ productItem?.count }}</p>
+              </div>
+
+              <p class="font-bold text-gray-800">${{ productItem?.price }}</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="bg-white rounded-2xl border border-gray-200 p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Order Summary</h3>
+
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-500">Subtotal</span>
+            <span class="font-semibold text-gray-800">{{
+              specificOrderProducts()?.[0]?.totalOrderPrice! -
+                specificOrderProducts()?.[0]?.taxPrice! -
+                specificOrderProducts()?.[0]?.shippingPrice! | currency: 'EUR'
+            }}</span>
+          </div>
+
+          <div class="flex justify-between">
+            <span class="text-gray-500">Shipping</span>
+            <span class="font-semibold text-gray-800">{{
+              specificOrderProducts()?.[0]?.shippingPrice | currency: 'EUR'
+            }}</span>
+          </div>
+
+          <div class="flex justify-between">
+            <span class="text-gray-500">Tax</span>
+            <span class="font-semibold text-gray-800">{{
+              specificOrderProducts()?.[0]?.taxPrice | currency: 'EUR'
+            }}</span>
+          </div>
+
+          <div class="flex justify-between border-t pt-3 mt-3">
+            <span class="font-bold text-gray-800">Total</span>
+            <span class="font-bold text-gray-800">{{
+              specificOrderProducts()?.[0]?.totalOrderPrice | currency: 'EUR'
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else if (specificOrderProducts() === null) {
+  <div class="min-h-[70vh] flex items-center justify-center">
+    <p class="text-gray-500 text-lg">Loading order details...</p>
+  </div>
+} @else {
+  <div class="text-center">
+    <p>
+      User Not Found!!! please press
+      <a routerLink="/login" class="text-gray-900 cursor-pointer">login</a> if you have account else
+      press
+      <a routerLink="/register">register</a>
+    </p>
+  </div>
+}
