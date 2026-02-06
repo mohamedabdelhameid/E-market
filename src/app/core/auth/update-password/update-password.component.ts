@@ -35,7 +35,6 @@ export class UpdatePasswordComponent {
     } else {
       this.userToken.set(localStorage.getItem('token'));
     }
-    console.log(this.userToken());
   }
 
   initializeForm() {

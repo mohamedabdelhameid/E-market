@@ -27,12 +27,6 @@ export class UpdateUserDataComponent {
   ngOnInit() {
     this.initializeForm();
     this.checkUserFound();
-    // if (localStorage.getItem('token')) {
-    //   this.userToken.set(localStorage.getItem('token'));
-    // } else {
-    //   this.userToken.set(null);
-    // }
-    // console.log(this.userToken());
   }
 
   checkUserFound() {
@@ -41,7 +35,6 @@ export class UpdateUserDataComponent {
     } else {
       this.userToken.set(localStorage.getItem('token'));
     }
-    console.log(this.userToken());
   }
 
   initializeForm() {

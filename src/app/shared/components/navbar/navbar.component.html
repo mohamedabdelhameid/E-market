@@ -8,9 +8,78 @@
 
     <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
       @if (isLoggedIn() === false) {
-        <a routerLink="/register">
-          <i class="fa-solid fa-arrow-right-to-bracket"></i>
-        </a>
+        <div>
+          <a routerLink="/register">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+          </a>
+        </div>
+
+        <div
+          class="z-50 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44"
+          id="user-dropdown"
+        >
+          <ul class="p-2 text-sm text-body font-medium" aria-labelledby="user-menu-button">
+            @if (isLoggedIn() === true) {
+              <li>
+                <a
+                  routerLink="/my-profile"
+                  routerLinkActive="activeLink"
+                  class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                  >Profile</a
+                >
+              </li>
+            }
+            <li>
+              <a
+                routerLink="/cart"
+                routerLinkActive="activeLink"
+                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                >Cart</a
+              >
+            </li>
+            <li>
+              <a
+                routerLink="/wishlist"
+                routerLinkActive="activeLink"
+                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                >Wishlist</a
+              >
+            </li>
+            <li>
+              <a
+                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-red-800 cursor-pointer rounded"
+                (click)="signOut()"
+                >Sign out</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <button
+          data-collapse-toggle="navbar-user"
+          type="button"
+          class="inline-flex cursor-pointer items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary"
+          aria-controls="navbar-user"
+          aria-expanded="false"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg
+            class="w-6 h-6"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-width="2"
+              d="M5 7h14M5 12h14M5 17h14"
+            />
+          </svg>
+        </button>
       } @else {
         <button
           type="button"
@@ -27,20 +96,21 @@
             alt="user photo"
           />
         </button>
-        <!-- Dropdown menu -->
         <div
           class="z-50 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44"
           id="user-dropdown"
         >
           <ul class="p-2 text-sm text-body font-medium" aria-labelledby="user-menu-button">
-            <li>
-              <a
-                routerLink="/my-profile"
-                routerLinkActive="activeLink"
-                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
-                >Profile</a
-              >
-            </li>
+            @if (isLoggedIn() === true) {
+              <li>
+                <a
+                  routerLink="/my-profile"
+                  routerLinkActive="activeLink"
+                  class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                  >Profile</a
+                >
+              </li>
+            }
             <li>
               <a
                 routerLink="/cart"
@@ -69,7 +139,7 @@
         <button
           data-collapse-toggle="navbar-user"
           type="button"
-          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary"
+          class="inline-flex cursor-pointer items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary"
           aria-controls="navbar-user"
           aria-expanded="false"
         >
