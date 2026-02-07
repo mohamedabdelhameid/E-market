@@ -50,9 +50,6 @@ export class ProductDetailsComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.getProductId();
-    if (localStorage.getItem('token')) {
-      this.getWishlistProducts();
-    }
   }
 
   getProductId() {
@@ -68,6 +65,7 @@ export class ProductDetailsComponent {
     this.productDetailServices.getProductDetails(id).subscribe({
       next: (res: { data: IProductDetail }) => {
         this.productDetail.set(res.data);
+        this.getWishlistProducts();
       },
       error: (err: Ierror) => {
         this.toastr.error(`${err.error.message}`, `${err.error.statusMsg}`, {
