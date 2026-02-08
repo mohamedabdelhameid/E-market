@@ -29,6 +29,7 @@ export class ProductDetailsComponent {
   private readonly cartServices = inject(CartServices);
   private readonly wishlistServices = inject(WishlistServices);
   isLoadingWishList: WritableSignal<boolean> = signal(false);
+  isLoading: WritableSignal<boolean> = signal(false);
   selectedWishlist: WritableSignal<string | null> = signal(null);
   selectedImgCover: WritableSignal<string | null> = signal(null);
   wishlistProducts: WritableSignal<Iproduct[]> = signal([]);
@@ -62,17 +63,20 @@ export class ProductDetailsComponent {
   }
 
   getProductDetails(id: string): void {
+    this.isLoading.set(true);
     this.productDetailServices.getProductDetails(id).subscribe({
       next: (res: { data: IProductDetail }) => {
         this.productDetail.set(res.data);
         this.getWishlistProducts();
+        this.isLoading.set(false);
       },
       error: (err: Ierror) => {
-        this.toastr.error(`${err.error.message}`, `${err.error.statusMsg}`, {
+        this.toastr.error(`${err.error.message}`, `${err.error.errors?.msg || 'failure'}`, {
           progressBar: true,
           progressAnimation: 'decreasing',
           timeOut: 3000,
         });
+        this.isLoading.set(false);
       },
     });
   }

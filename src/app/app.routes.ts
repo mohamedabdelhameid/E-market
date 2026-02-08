@@ -1,3 +1,4 @@
+import { NotFoundComponent } from './features/pages/not-found/not-found.component';
 import { Routes } from '@angular/router';
 import { HomeComponent } from './features/pages/home/home.component';
 import { AboutUsComponent } from './features/pages/about-us/about-us.component';
@@ -19,9 +20,9 @@ import { UpdateUserDataComponent } from './core/auth/update-user-data/update-use
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, title: 'Home' },
-  { path: 'products/:_id', component: ProductDetailsComponent, title: 'product details' },
   { path: 'about-us', component: AboutUsComponent, title: 'About US' },
   { path: 'products', component: ProductsComponent, title: 'Products' },
+  { path: 'products/:_id', component: ProductDetailsComponent, title: 'product details' },
   { path: 'cart', component: CartComponent, title: 'Cart' },
   { path: 'my-profile', component: OrdersComponent, title: 'My profile' },
   { path: 'order/:id', component: OrderDetailsComponent, title: 'order details' },
@@ -62,4 +63,5 @@ export const routes: Routes = [
     canActivate: [guestGuardGuard],
   },
   { path: 'login', component: LoginComponent, title: 'Login', canActivate: [guestGuardGuard] },
+  { path: '**', component: NotFoundComponent, pathMatch: 'full' },
 ];
