@@ -4,6 +4,7 @@ export interface Iwishlist {
   status: string;
   count: number;
   data: Daum[];
+  message?: string;
 }
 
 export interface Daum {

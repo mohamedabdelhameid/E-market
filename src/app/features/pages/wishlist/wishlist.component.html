@@ -1,15 +1,6 @@
 <div class="wishlistContainer max-w-6xl mx-auto p-6">
   <h2 class="text-2xl font-bold mb-6 text-gray-800">❤️ My Wishlist</h2>
 
-  <!-- Empty State -->
-  <!-- شيل الكومنت لو الويشلست فاضية -->
-  <!--
-  <div class="text-center py-20 text-gray-500">
-    <p class="text-lg">Your wishlist is empty</p>
-    <p class="text-sm mt-2">Start adding products you love 💖</p>
-  </div>
-  -->
-
   <div class="grid grid-cols-12 justify-between gap-2.5 mt-2.5">
     @defer (on viewport) {
       @for (item of wishlistProducts(); track $index) {

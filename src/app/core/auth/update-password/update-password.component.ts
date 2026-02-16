@@ -88,8 +88,6 @@ export class UpdatePasswordComponent {
         .updatePassword(this.updatePasswordForm.value)
         .subscribe({
           next: (res) => {
-            console.log(res);
-
             this.toastr.success(`Successful password update`, 'Success', {
               progressBar: true,
               progressAnimation: 'decreasing',

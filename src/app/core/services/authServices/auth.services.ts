@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiLink } from '../../environment/links/api-link.environment';
 import {
   SignUpAuth,
@@ -25,6 +25,7 @@ export class AuthServices {
   private platformID = inject(PLATFORM_ID);
   private router = inject(Router);
   tokenKey: WritableSignal<string | null> = signal(null);
+  userData = new BehaviorSubject<string>('');
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -34,7 +35,6 @@ export class AuthServices {
 
   getToken() {
     this.tokenKey.set(localStorage.getItem(STORED_KEY.token));
-    console.log(this.tokenKey);
   }
 
   getAllUsers(): Observable<UserRoot<IAllUsers[]>> {
@@ -65,16 +65,11 @@ export class AuthServices {
     return this.httpClient.put<UserRoot<User>>(
       ApiLink.apiLink + 'users/changeMyPassword',
       userData,
-      {
-        headers: { [STORED_KEY.token]: localStorage.getItem(STORED_KEY.token) || '' },
-      },
     );
   }
 
   updateDataUser(userData: User): Observable<UserRoot<User>> {
-    return this.httpClient.put<UserRoot<User>>(ApiLink.apiLink + 'users/updateMe', userData, {
-      headers: { [STORED_KEY.token]: localStorage.getItem(STORED_KEY.token) || '' },
-    });
+    return this.httpClient.put<UserRoot<User>>(ApiLink.apiLink + 'users/updateMe', userData);
   }
 
   decodeUserData(): JWTDecode | undefined {

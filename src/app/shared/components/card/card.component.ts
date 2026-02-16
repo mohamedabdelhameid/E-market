@@ -63,6 +63,7 @@ export class CardComponent {
     this.addProductLoading.set(true);
     this.cartServices.addProductToCart(productId).subscribe({
       next: (res: RootCart) => {
+        this.cartServices.cartCount.set(res.numOfCartItems);
         this.toastr.success(`${res.message}`, `Success`, {
           progressBar: true,
           progressAnimation: 'decreasing',
@@ -98,6 +99,7 @@ export class CardComponent {
     this.wishlistServices.getWishlistProducts().subscribe({
       next: (res: Iwishlist) => {
         this.wishlistProducts.set(res.data);
+        this.wishlistServices.wishlistCount.set(res.count);
         // this.checkIfFounded();
 
         this.isLoadingWishList.set(false);
@@ -127,6 +129,7 @@ export class CardComponent {
             timeOut: 3000,
           });
           this.wishlistProducts.set(res.data);
+          this.wishlistServices.wishlistCount.set(res.count);
           // this.getWishlistProducts();
           // this.checkIfFounded();
           this.isLoadingWishList.set(false);
@@ -151,8 +154,6 @@ export class CardComponent {
           this.isLoadingWishList.set(false);
         },
       });
-      // this.getWishlistProducts();
-      // this.isLoadingWishList.set(false);
     } else {
       this.isLoadingWishList.set(true);
       this.added.set(true);
@@ -164,7 +165,9 @@ export class CardComponent {
             progressAnimation: 'decreasing',
             timeOut: 3000,
           });
+          this.wishlistServices.wishlistCount.set(res.count);
           this.wishlistProducts.set(res.data);
+
           this.isLoadingWishList.set(false);
           // this.checkIfFounded();
 

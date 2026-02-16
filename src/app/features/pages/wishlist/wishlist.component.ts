@@ -38,6 +38,7 @@ export class WishlistComponent {
     this.wishlistServices.getWishlistProducts().subscribe({
       next: (res: Iwishlist) => {
         this.wishlistProducts.set(res.data);
+        this.wishlistServices.wishlistCount.set(res.count);
 
         this.isLoadingWishList.set(false);
       },

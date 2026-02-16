@@ -29,11 +29,11 @@
                 >
               </li>
             }
-            <li>
+            <li class="flex items-center justify-between relative">
               <a
                 routerLink="/cart"
                 routerLinkActive="activeLink"
-                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                class="inline-flex items-center p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
                 >Cart</a
               >
             </li>
@@ -100,6 +100,11 @@
           class="z-50 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44"
           id="user-dropdown"
         >
+          <div class="px-4 py-3 text-sm border-b border-default">
+            <span class="block text-heading font-medium">{{
+              authServices.decodeUserData()?.name
+            }}</span>
+          </div>
           <ul class="p-2 text-sm text-body font-medium" aria-labelledby="user-menu-button">
             @if (isLoggedIn() === true) {
               <li>
@@ -111,21 +116,31 @@
                 >
               </li>
             }
-            <li>
+            <li class="flex items-center justify-between relative">
               <a
                 routerLink="/cart"
                 routerLinkActive="activeLink"
-                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                class="inline-flex w-full items-center p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
                 >Cart</a
               >
+              <div
+                class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-white bg-blue-600 rounded-full"
+              >
+                {{ countCart() }}
+              </div>
             </li>
-            <li>
+            <li class="flex items-center justify-between relative">
               <a
                 routerLink="/wishlist"
                 routerLinkActive="activeLink"
                 class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
                 >Wishlist</a
               >
+              <div
+                class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-white bg-blue-600 rounded-full"
+              >
+                {{ wishlistCount() }}
+              </div>
             </li>
             <li>
               <a

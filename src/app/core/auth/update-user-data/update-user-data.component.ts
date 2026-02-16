@@ -61,8 +61,6 @@ export class UpdateUserDataComponent {
   onSubmit() {
     this.isLoading.set(true);
     if (this.updateDataForm.valid) {
-      console.log(this.updateDataForm.value);
-
       this.authSubscription?.unsubscribe();
       this.authSubscription = this.authServices
         .updateDataUser(this.updateDataForm.value)

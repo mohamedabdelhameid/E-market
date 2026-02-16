@@ -72,8 +72,6 @@ export class VerifyCodeComponent {
         .verifyCode({ resetCode: this.otpInputsValue() })
         .subscribe({
           next: (res) => {
-            console.log(res);
-
             this.initializeForm();
             this.isLoading.set(false);
             this.router.navigate(['/reset-password']);

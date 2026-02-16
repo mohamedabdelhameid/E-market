@@ -8,15 +8,17 @@ import { AuthServices } from './core/services/authServices/auth.services';
 import { ToastUtilService } from './core/services/toastrServices/toastr.services';
 import { Igest } from './core/interfaces/gestInterfaces/igest.interfaces';
 import { Ierror } from './core/interfaces/errorInterface/ierror.interfaces';
+import { NgxSpinnerComponent } from 'ngx-spinner';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, FooterComponent],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, NgxSpinnerComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   private readonly platformId = Inject(PLATFORM_ID);
+  private readonly authServices = Inject(AuthServices);
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.

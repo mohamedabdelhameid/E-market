@@ -25,23 +25,12 @@ export class OrdersComponent {
 
   ngOnInit(): void {
     this.userData.set(this.authServices.decodeUserData() as JWTDecode);
+    // this.getUserOrders();
     this.getUserOrders();
-    this.findUserData();
-  }
-
-  findUserData(): void {
-    this.authServices.getAllUsers().subscribe({
-      next: (res) => {
-        this.user.set(res.users?.find((u) => u._id === this.userData().id)!);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
   }
 
   getUserOrders(): void {
-    this.orderServices.getUserOrders(this.userData()?.id).subscribe({
+    this.orderServices.getUserOrders(this.authServices.decodeUserData()?.id!).subscribe({
       next: (res: IUserOrder[]) => {
         this.userOrderProducts.set(res);
       },

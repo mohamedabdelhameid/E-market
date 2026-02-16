@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { ApiLink } from '../../../core/environment/links/api-link.environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpClient } from '@angular/common/http';
@@ -10,40 +10,27 @@ import { RootCart } from '../../../core/interfaces/cartItems/cart.interfaces';
 })
 export class CartServices {
   private readonly httpClient = inject(HttpClient);
+  cartCount: WritableSignal<number> = signal<number>(0);
 
   addProductToCart(productId: string): Observable<RootCart> {
-    return this.httpClient.post<RootCart>(
-      ApiLink.apiLink + 'cart',
-      {
-        productId: productId,
-      },
-      {
-        headers: { [STORED_KEY.token]: localStorage.getItem(STORED_KEY.token) || '' },
-      },
-    );
+    return this.httpClient.post<RootCart>(ApiLink.apiCartLink + 'cart', {
+      productId: productId,
+    });
   }
 
   getCartProducts(): Observable<RootCart> {
-    return this.httpClient.get<RootCart>(ApiLink.apiLink + 'cart', {
-      headers: { [STORED_KEY.token]: localStorage.getItem(STORED_KEY.token) || '' },
-    });
+    return this.httpClient.get<RootCart>(ApiLink.apiCartLink + 'cart');
   }
 
   plusCountProduct(productId: string, dataCount: object): Observable<RootCart> {
-    return this.httpClient.put<RootCart>(ApiLink.apiLink + `cart/${productId}`, dataCount, {
-      headers: { [STORED_KEY.token]: localStorage.getItem(STORED_KEY.token) || '' },
-    });
+    return this.httpClient.put<RootCart>(ApiLink.apiCartLink + `cart/${productId}`, dataCount);
   }
 
   deleteCartItem(productId: string): Observable<RootCart> {
-    return this.httpClient.delete<RootCart>(ApiLink.apiLink + `cart/${productId}`, {
-      headers: { [STORED_KEY.token]: localStorage.getItem(STORED_KEY.token) || '' },
-    });
+    return this.httpClient.delete<RootCart>(ApiLink.apiCartLink + `cart/${productId}`);
   }
 
   deleteAllCartItems(): Observable<RootCart> {
-    return this.httpClient.delete<RootCart>(ApiLink.apiLink + `cart`, {
-      headers: { [STORED_KEY.token]: localStorage.getItem(STORED_KEY.token) || '' },
-    });
+    return this.httpClient.delete<RootCart>(ApiLink.apiCartLink + `cart`);
   }
 }

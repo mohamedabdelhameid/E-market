@@ -23,6 +23,7 @@ export class CartComponent {
   isLoading: WritableSignal<boolean> = signal(false);
   plusLoading: WritableSignal<boolean> = signal(false);
   minLoading: WritableSignal<boolean> = signal(false);
+  userId: WritableSignal<string> = signal('');
   deleteLoading: WritableSignal<boolean> = signal(false);
   deleteAllLoading: WritableSignal<boolean> = signal(false);
   myToken: WritableSignal<string> = signal('');
@@ -36,13 +37,14 @@ export class CartComponent {
     if (isPlatformBrowser(this.platform_id)) {
       this.checkLogedIn();
     }
-    this.getCartProducts();
   }
 
   checkLogedIn(): void {
-    if (localStorage.getItem('token')) {
+    const token = localStorage.getItem('token');
+    if (token) {
       this.isLogedIn.set(true);
-      this.myToken.set(localStorage.getItem('token')!);
+      this.myToken.set(token);
+      this.getCartProducts();
     } else {
       this.isLogedIn.set(false);
       this.myToken.set('');
@@ -52,6 +54,7 @@ export class CartComponent {
   getCartProducts(): void {
     this.cartServices.getCartProducts().subscribe({
       next: (res: RootCart) => {
+        this.userId.set(res.data.cartOwner);
         this.cartProducts.set(res.data);
       },
       error: (err: Ierror) => {
@@ -76,6 +79,7 @@ export class CartComponent {
     this.cartServices.plusCountProduct(productId, count).subscribe({
       next: (res: RootCart) => {
         this.cartProducts.set(res.data);
+        this.cartServices.cartCount.set(res.numOfCartItems);
 
         this.isLoading.set(false);
         this.minLoading.set(false);
@@ -117,6 +121,7 @@ export class CartComponent {
     this.cartServices.deleteCartItem(productId).subscribe({
       next: (res: RootCart) => {
         this.cartProducts.set(res.data);
+        this.cartServices.cartCount.set(res.numOfCartItems);
 
         this.deleteLoading.set(false);
       },
@@ -142,6 +147,7 @@ export class CartComponent {
     this.cartServices.deleteAllCartItems().subscribe({
       next: (res: RootCart) => {
         this.cartProducts.set(res.data);
+        this.cartServices.cartCount.set(res.numOfCartItems);
 
         this.deleteAllLoading.set(false);
       },
