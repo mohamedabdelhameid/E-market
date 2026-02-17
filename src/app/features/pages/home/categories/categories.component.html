@@ -1,0 +1,11 @@
+<div class="mt-2.5">
+  <p class="text-xl md:text-5xl text-gray-500">Categories</p>
+
+  <owl-carousel-o [options]="customOptions" class="h-75">
+    @for (slide of slidesStore(); track slide._id) {
+      <ng-template carouselSlide [id]="slide._id">
+        <img [src]="slide.image" [alt]="slide.slug" [title]="slide.name" class="h-75 p-2.5" />
+      </ng-template>
+    }
+  </owl-carousel-o>
+</div>

@@ -6,6 +6,11 @@
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
 
+@use 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+/* @use '../node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.carousel.scss';
+@use '../node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.theme.default.scss'; */
+@use 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default' as owl-theme;
+
 @layer customLayer {
   .btn {
     @apply text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:outline-none font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5;
