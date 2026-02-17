@@ -15,6 +15,9 @@ import { ToastUtilService } from '../../../core/services/toastrServices/toastr.s
 import { RootCart } from '../../../core/interfaces/cartItems/cart.interfaces';
 import { Ierror } from '../../../core/interfaces/errorInterface/ierror.interfaces';
 import { CardComponent } from '../../../shared/components/card/card.component';
+import { WishlistServices } from '../../services/wishlistServices/wishlist.services';
+import { Iwishlist } from '../../../core/interfaces/wishlistInterfaces/iwishlist.interfaces';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-products',
@@ -38,6 +41,8 @@ export class ProductsComponent {
   selectedCategory: WritableSignal<string> = signal('');
   selected: WritableSignal<string | null> = signal(null);
   addProductLoading: WritableSignal<boolean> = signal(false);
+  private readonly wishlistServices = inject(WishlistServices);
+  isLoadingWishList: WritableSignal<boolean> = signal(false);
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -46,6 +51,31 @@ export class ProductsComponent {
     this.getCategories();
     this.getSubCategories();
     this.getBrands();
+    if (isPlatformBrowser(this.plate_ID)) {
+      if (localStorage.getItem('token')) {
+        this.getWishlistProducts();
+      }
+    }
+  }
+
+  getWishlistProducts(): void {
+    this.isLoadingWishList.set(true);
+    this.wishlistServices.getWishlistProducts().subscribe({
+      next: (res: Iwishlist) => {
+        this.wishlistServices.wishListProduct.set(res.data);
+        this.wishlistServices.wishlistCount.set(res.count);
+
+        this.isLoadingWishList.set(false);
+      },
+      error: (err: Ierror) => {
+        this.toastr.error(`${err.error.message}`, `${err.error.statusMsg}`, {
+          progressBar: true,
+          progressAnimation: 'decreasing',
+          timeOut: 3000,
+        });
+        this.isLoadingWishList.set(false);
+      },
+    });
   }
 
   getProductsData(): void {

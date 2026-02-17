@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, inject, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JWTDecode } from '../../../../core/interfaces/authInterface/auth.interface';
 import { Ierror } from '../../../../core/interfaces/errorInterface/ierror.interfaces';
@@ -6,7 +6,7 @@ import { IUserOrder } from '../../../../core/interfaces/userOrderInterfaces/iuse
 import { AuthServices } from '../../../../core/services/authServices/auth.services';
 import { ToastUtilService } from '../../../../core/services/toastrServices/toastr.services';
 import { OrderServices } from '../../../services/orderServices/order.services';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-order-details',
@@ -18,6 +18,7 @@ export class OrderDetailsComponent {
   orderId: WritableSignal<string> = signal('');
   private readonly route = inject(ActivatedRoute);
   private readonly orderServices = inject(OrderServices);
+  private readonly plate_ID = inject(PLATFORM_ID);
   readonly router = inject(Router);
   private readonly authServices = inject(AuthServices);
   userData: WritableSignal<JWTDecode> = signal({} as JWTDecode);
@@ -29,7 +30,9 @@ export class OrderDetailsComponent {
     //Add 'implements OnInit' to the class.
     this.orderId.set(this.route.snapshot.paramMap.get('id') || '');
     this.userData.set((this.authServices.decodeUserData() as JWTDecode) || {});
-    this.getUserOrders();
+    if (isPlatformBrowser(this.plate_ID)) {
+      this.getUserOrders();
+    }
   }
 
   getUserOrders(): void {

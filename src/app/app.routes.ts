@@ -1,67 +1,119 @@
-import { NotFoundComponent } from './features/pages/not-found/not-found.component';
 import { Routes } from '@angular/router';
-import { HomeComponent } from './features/pages/home/home.component';
-import { AboutUsComponent } from './features/pages/about-us/about-us.component';
-import { ProductsComponent } from './features/pages/products/products.component';
-import { ProductDetailsComponent } from './features/pages/product-details/product-details.component';
-import { SignupComponent } from './core/auth/signup/signup.component';
-import { LoginComponent } from './core/auth/login/login.component';
 import { guestGuardGuard } from './core/guards/guestGuards/guest-guard-guard';
-import { CartComponent } from './features/pages/cart/cart.component';
-import { WishlistComponent } from './features/pages/wishlist/wishlist.component';
-import { OrdersComponent } from './features/pages/orders & profile/orders.component';
-import { OrderDetailsComponent } from './features/pages/orders & profile/order-details/order-details.component';
-import { ForgetPasswordComponent } from './core/auth/forget-password/forget-password.component';
-import { VerifyCodeComponent } from './core/auth/verify-code/verify-code.component';
-import { ResetPasswordComponent } from './core/auth/reset-password/reset-password.component';
-import { UpdatePasswordComponent } from './core/auth/update-password/update-password.component';
-import { UpdateUserDataComponent } from './core/auth/update-user-data/update-user-data.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, title: 'Home' },
-  { path: 'about-us', component: AboutUsComponent, title: 'About US' },
-  { path: 'products', component: ProductsComponent, title: 'Products' },
-  { path: 'products/:_id', component: ProductDetailsComponent, title: 'product details' },
-  { path: 'cart', component: CartComponent, title: 'Cart' },
-  { path: 'my-profile', component: OrdersComponent, title: 'My profile' },
-  { path: 'order/:id', component: OrderDetailsComponent, title: 'order details' },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./features/pages/home/home.component').then((m) => m.HomeComponent),
+    title: 'Home',
+  },
+  {
+    path: 'about-us',
+    loadComponent: () =>
+      import('./features/pages/about-us/about-us.component').then((m) => m.AboutUsComponent),
+    title: 'About US',
+  },
+  {
+    path: 'products',
+    loadComponent: () =>
+      import('./features/pages/products/products.component').then((m) => m.ProductsComponent),
+    title: 'Products',
+  },
+  {
+    path: 'products/:_id',
+    loadComponent: () =>
+      import('./features/pages/product-details/product-details.component').then(
+        (m) => m.ProductDetailsComponent,
+      ),
+    title: 'product details',
+  },
+  {
+    path: 'cart',
+    loadComponent: () =>
+      import('./features/pages/cart/cart.component').then((m) => m.CartComponent),
+    title: 'Cart',
+  },
+  {
+    path: 'my-profile',
+    loadComponent: () =>
+      import('./features/pages/orders & profile/orders.component').then((m) => m.OrdersComponent),
+    title: 'My profile',
+  },
+  {
+    path: 'order/:id',
+    loadComponent: () =>
+      import('./features/pages/orders & profile/order-details/order-details.component').then(
+        (m) => m.OrderDetailsComponent,
+      ),
+    title: 'order details',
+  },
   {
     path: 'forget-password',
-    component: ForgetPasswordComponent,
+    loadComponent: () =>
+      import('./core/auth/forget-password/forget-password.component').then(
+        (m) => m.ForgetPasswordComponent,
+      ),
     title: 'Forget Password',
   },
   {
     path: 'reset-password',
-    component: ResetPasswordComponent,
+    loadComponent: () =>
+      import('./core/auth/reset-password/reset-password.component').then(
+        (m) => m.ResetPasswordComponent,
+      ),
     title: 'Reset Password',
   },
   {
     path: 'update-password',
-    component: UpdatePasswordComponent,
+    loadComponent: () =>
+      import('./core/auth/update-password/update-password.component').then(
+        (m) => m.UpdatePasswordComponent,
+      ),
     title: 'Update Password',
   },
   {
     path: 'update-profile',
-    component: UpdateUserDataComponent,
+    loadComponent: () =>
+      import('./core/auth/update-user-data/update-user-data.component').then(
+        (m) => m.UpdateUserDataComponent,
+      ),
     title: 'Update Profile',
   },
   {
     path: 'verify-code',
-    component: VerifyCodeComponent,
+    loadComponent: () =>
+      import('./core/auth/verify-code/verify-code.component').then((m) => m.VerifyCodeComponent),
     title: 'Verify Code',
   },
   {
     path: 'wishlist',
-    component: WishlistComponent,
+    loadComponent: () =>
+      import('./features/pages/wishlist/wishlist.component').then((m) => m.WishlistComponent),
     title: 'Favorite',
   },
   {
     path: 'register',
-    component: SignupComponent,
+    loadComponent: () =>
+      import('./core/auth/signup/signup.component').then((m) => m.SignupComponent),
     title: 'Register',
     canActivate: [guestGuardGuard],
   },
-  { path: 'login', component: LoginComponent, title: 'Login', canActivate: [guestGuardGuard] },
-  { path: '**', component: NotFoundComponent, pathMatch: 'full' },
+  {
+    path: 'login',
+    loadComponent: () => import('./core/auth/login/login.component').then((m) => m.LoginComponent),
+    title: 'Login',
+    canActivate: [guestGuardGuard],
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./features/pages/not-found/not-found.component').then((m) => m.NotFoundComponent),
+    pathMatch: 'full',
+  },
 ];

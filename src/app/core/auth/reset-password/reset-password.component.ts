@@ -26,7 +26,9 @@ export class ResetPasswordComponent {
 
   ngOnInit() {
     this.initializeForm();
-    this.checkUserFound();
+    if (isPlatformBrowser(this.plateFormId)) {
+      this.checkUserFound();
+    }
   }
 
   checkUserFound() {

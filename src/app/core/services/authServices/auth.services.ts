@@ -34,7 +34,9 @@ export class AuthServices {
   }
 
   getToken() {
-    this.tokenKey.set(localStorage.getItem(STORED_KEY.token));
+    if (isPlatformBrowser(this.platformID)) {
+      this.tokenKey.set(localStorage.getItem(STORED_KEY.token));
+    }
   }
 
   getAllUsers(): Observable<UserRoot<IAllUsers[]>> {

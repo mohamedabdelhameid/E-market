@@ -1,10 +1,10 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, isPlatformBrowser } from '@angular/common';
 import {
   Component,
   computed,
   inject,
   input,
-  Output,
+  PLATFORM_ID,
   Signal,
   signal,
   WritableSignal,
@@ -16,8 +16,7 @@ import { ToastUtilService } from '../../../core/services/toastrServices/toastr.s
 import { CartServices } from '../../../features/services/cartServices/cart.services';
 import { Iproduct } from '../../../core/interfaces/products/iproduct.interface';
 import { WishlistServices } from '../../../features/services/wishlistServices/wishlist.services';
-import { Iwishlist } from '../../../core/interfaces/wishlistInterfaces/iwishlist.interfaces';
-import { EventEmitter } from 'stream';
+import { Daum, Iwishlist } from '../../../core/interfaces/wishlistInterfaces/iwishlist.interfaces';
 
 @Component({
   selector: 'app-card',
@@ -28,38 +27,39 @@ import { EventEmitter } from 'stream';
 export class CardComponent {
   toastr = inject(ToastUtilService);
   private readonly cartServices = inject(CartServices);
+  private readonly plate_ID = inject(PLATFORM_ID);
   isLoading: WritableSignal<boolean> = signal(false);
   selected: WritableSignal<string | null> = signal(null);
   addProductLoading: WritableSignal<boolean> = signal(false);
   item = input<Iproduct>();
   private readonly wishlistServices = inject(WishlistServices);
   isLoadingWishList: WritableSignal<boolean> = signal(false);
+
   selectedWishlist: WritableSignal<string | null> = signal(null);
-  // addWishlistProductLoading: WritableSignal<boolean> = signal(false);
-  // removeWishlistProductLoading: WritableSignal<boolean> = signal(false);
-  wishlistProducts: WritableSignal<Iproduct[]> = signal([]);
-  // productFounded: WritableSignal<boolean> = signal(false);
-  productFounded!: Signal<boolean>;
   added: WritableSignal<boolean> = signal(false);
+
+  productFounded = computed(() =>
+    this.wishlistServices.wishListProduct().some((product) => product.id === this.item()?.id),
+  );
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    if (localStorage.getItem('token')) {
-      this.getWishlistProducts();
+    if (isPlatformBrowser(this.plate_ID)) {
+      if (localStorage.getItem('token')) {
+        this.checkIfProductInWishlist();
+      }
     }
-    this.checkFounded();
   }
 
-  checkFounded(): void {
+  checkIfProductInWishlist() {
     this.productFounded = computed(() =>
-      this.wishlistProducts().some((product) => product.id === this.item()?.id),
+      this.wishlistServices.wishListProduct().some((product) => product.id === this.item()?.id),
     );
   }
 
   addProductToCart(productId: string): void {
     this.selected.set(productId);
-
     this.addProductLoading.set(true);
     this.cartServices.addProductToCart(productId).subscribe({
       next: (res: RootCart) => {
@@ -93,34 +93,10 @@ export class CardComponent {
     });
   }
 
-  getWishlistProducts(): void {
-    this.isLoadingWishList.set(true);
-    // Call the service to get wishlist products and update the signal
-    this.wishlistServices.getWishlistProducts().subscribe({
-      next: (res: Iwishlist) => {
-        this.wishlistProducts.set(res.data);
-        this.wishlistServices.wishlistCount.set(res.count);
-        // this.checkIfFounded();
-
-        this.isLoadingWishList.set(false);
-      },
-      error: (err: Ierror) => {
-        this.toastr.error(`${err.error.message}`, `${err.error.statusMsg}`, {
-          progressBar: true,
-          progressAnimation: 'decreasing',
-          timeOut: 3000,
-        });
-        this.isLoadingWishList.set(false);
-      },
-    });
-  }
-
   addProductToWishlist(productId: string): void {
     this.selectedWishlist.set(productId);
-    // this.added.set(false);
     this.isLoadingWishList.set(true);
     if (this.productFounded()) {
-      // this.removeProductFromWishlist(productId);
       this.wishlistServices.removeProductFromWishlist(productId).subscribe({
         next: (res: Iwishlist) => {
           this.toastr.warning(`Successfully removed from favorite`, `${res.status}`, {
@@ -128,10 +104,11 @@ export class CardComponent {
             progressAnimation: 'decreasing',
             timeOut: 3000,
           });
-          this.wishlistProducts.set(res.data);
-          this.wishlistServices.wishlistCount.set(res.count);
-          // this.getWishlistProducts();
-          // this.checkIfFounded();
+          this.checkIfProductInWishlist();
+          this.wishlistServices.getWishlistProducts().subscribe();
+
+          // this.wishlistServices.wishListProduct.set(res.data);
+          this.wishlistServices.wishlistCount.set(res.data.length);
           this.isLoadingWishList.set(false);
         },
         error: (err: Ierror) => {
@@ -155,9 +132,6 @@ export class CardComponent {
         },
       });
     } else {
-      this.isLoadingWishList.set(true);
-      this.added.set(true);
-
       this.wishlistServices.addProductToWishlist(productId).subscribe({
         next: (res: Iwishlist) => {
           this.toastr.success(`Successfully added to favorite`, `${res.status}`, {
@@ -165,13 +139,13 @@ export class CardComponent {
             progressAnimation: 'decreasing',
             timeOut: 3000,
           });
-          this.wishlistServices.wishlistCount.set(res.count);
-          this.wishlistProducts.set(res.data);
+          this.checkIfProductInWishlist();
+          this.wishlistServices.getWishlistProducts().subscribe();
+
+          this.wishlistServices.wishlistCount.set(res.data.length);
+          // this.wishlistServices.wishListProduct.set(res.data);
 
           this.isLoadingWishList.set(false);
-          // this.checkIfFounded();
-
-          // this.getWishlistProducts();
           this.added.set(true);
         },
         error: (err: Ierror) => {
