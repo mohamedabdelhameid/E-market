@@ -87,7 +87,7 @@
                 <p class="text-sm text-gray-500">Quantity: {{ productItem?.count }}</p>
               </div>
 
-              <p class="font-bold text-gray-800">${{ productItem?.price }}</p>
+              <p class="font-bold text-gray-800">{{ productItem?.price | currency: 'EUR'}}</p>
             </div>
           }
         </div>
